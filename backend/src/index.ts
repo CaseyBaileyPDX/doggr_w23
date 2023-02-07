@@ -37,6 +37,12 @@ app.use("/users/:userID", (req, res, next) => {
   return next();
 });
 
+// BONUS 2
+app.get("/fetchRandomUser", async (req, res) => {
+  const randomUser = await axios.get("https://randomuser.me/api/");
+  res.status(200).json(randomUser.data);
+});
+
 // Part 2 of hw "/users" methods
 app.get("/users", async (req, res) => {
   const usersFile = await fs.readFile(path.resolve(__dirname, 'public', 'users.html'))

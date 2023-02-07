@@ -1,8 +1,11 @@
 export function response(httpModuleRes) {
     function end(content) {
-        httpModuleRes.setHeader("Content-Length", content.length);
+        if (httpModuleRes.getHeader("Content-Length") === undefined) {
+            httpModuleRes.setHeader("Content-Length", content.length);
+        }
+
         if (! httpModuleRes.statusCode) {
-            console.error("Status code unset during end");
+            console.log("Status code unset during end");
             httpModuleRes.status(200);
         }
         httpModuleRes.end(content);
@@ -21,9 +24,10 @@ export function response(httpModuleRes) {
     }
 
     httpModuleRes.json = (content) => {
-        content = JSON.stringify(content);
+        const strContent = JSON.stringify(content);
         httpModuleRes.setHeader("Content-Type", "application/json");
-        return end(content);
+        console.log("Sending json-ified results");
+        httpModuleRes.end(strContent);
     }
 
     httpModuleRes.redirect = (url) => {
