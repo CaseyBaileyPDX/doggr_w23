@@ -30,6 +30,13 @@ app.use("/get", cors());
 //   res.send("Deleted a user");
 // })
 
+// BONUS 1
+app.use("/users/:userID", (req, res, next) => {
+  console.error(`${req.params.userID}`);
+  // MUST CALL NEXT!
+  return next();
+});
+
 // Part 2 of hw "/users" methods
 app.get("/users", async (req, res) => {
   const usersFile = await fs.readFile(path.resolve(__dirname, 'public', 'users.html'))
