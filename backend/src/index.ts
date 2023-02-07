@@ -7,51 +7,76 @@ import cors from "cors";
 import fs from "fs/promises";
 import path from "path";
 import {Nastify} from "./nastify";
+import axios from "axios";
+import { promisify } from "util";
 //import { Fastify } from "./fastify";
 
+// Makes our lives a bit nicer, now we can await the timeout, see note on custom variant here
+// https://nodejs.org/docs/latest-v8.x/api/timers.html#timers_settimeout_callback_delay_args
+const asyncTimer = promisify(setTimeout);
+
 const app = Nastify();
-
-console.log(app);
-
 app.use("/about", cors());
 app.use("/get", cors());
 
+//////////////////////////////////// HW1 solution
+// Part 1 of hw TESTING
+// app.put("/users", (req, res) => {
+//   console.log("PUT a user");
+//   res.send("PUT a user");
+// });
+// app.delete("/users", (req, res) => {
+//   console.log("Deleted a user");
+//   res.send("Deleted a user");
+// })
+
+// Part 2 of hw
+app.get("/users", async (req, res) => {
+  const usersFile = await fs.readFile(path.resolve(__dirname, 'public', 'users.html'))
+    .catch(err => {
+      console.error(err);
+      //send error result - 500!
+      res.setHeader('Content-Type', 'text/html');
+      res.status(500).send("Error occurred", err);
+    });
+
+  res.status(200).send(usersFile);
+});
+
+app.post("/users", async (req, res) => {
+
+  console.log("Starting 3 second wait");
+
+  setTimeout(() => {
+    console.log("Completed 3 second wait");
+    res.send("POST to users waited 3 seconds");
+  }, 3000);
+});
+
+app.put("/users", async (req, res) => {
+  console.log("Starting 2 second wait");
+  await asyncTimer(2000);
+  console.log("Completed 2 second wait");
+  return res.send("PUT to users waited 2 seconds");
+
+});
+
+
+//////////////////////////////////////////////////////////
+
+
+
 app.get("/about", (req, res) => {
-    res.send("I am the about page");
+  res.send("I am the about page");
 });
 
 app.post("/about", (req, res) => {
-    res.send("I am POST REQUEST");
+  res.send("I am POST REQUEST");
 })
 
 app.get("/users", (req, res) => {
 
 })
-
-app.put("/users", (req, res) => {
-  console.log("PUT a user");
-  res.send("PUT a user");
-});
-app.delete("/users", (req, res) => {
-  console.log("Deleted a user");
-  res.send("Deleted a user");
-})
-
-
-/*
-
-app.get('/users", (req, res) => {
-
-}
-
-app.post('/users", (req, res) => {
-
-}
-
-app.put('/users", (req, res) => {
-
-}
- */
 
 app.get("/", async (req, res) => {
 
