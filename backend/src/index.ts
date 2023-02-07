@@ -30,7 +30,7 @@ app.use("/get", cors());
 //   res.send("Deleted a user");
 // })
 
-// Part 2 of hw
+// Part 2 of hw "/users" methods
 app.get("/users", async (req, res) => {
   const usersFile = await fs.readFile(path.resolve(__dirname, 'public', 'users.html'))
     .catch(err => {
@@ -61,10 +61,19 @@ app.put("/users", async (req, res) => {
 
 });
 
+// Part 2 of hw "/users/:userID" methods
+app.delete("/users/:userID", async (req, res) => {
+  const heads = Math.random() < 0.5;
+  const userId = req.params.userID;
+  if (heads) { // fake coin flip is heads
+    res.send(`User ${userId} was deleted.`);
+  } else { // fake coin flip was tails
+    await asyncTimer(2000);
+    res.status(500).send(`User ${userId} NOT FOUND!`);
+  }
+});
 
 //////////////////////////////////////////////////////////
-
-
 
 app.get("/about", (req, res) => {
   res.send("I am the about page");
