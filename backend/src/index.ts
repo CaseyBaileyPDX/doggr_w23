@@ -43,6 +43,14 @@ app.get("/fetchRandomUser", async (req, res) => {
   res.status(200).json(randomUser.data);
 });
 
+// BONUS 3
+app.get("/fetchUserPicture", async (req, res) => {
+  const randomUser = await axios.get("https://dog.ceo/api/breeds/image/random");
+  const imgLink = randomUser.data.message;
+  const htmly = `<html><body><img src="${imgLink}"></body></html>`
+  res.status(200).send(htmly);
+});
+
 // Part 2 of hw "/users" methods
 app.get("/users", async (req, res) => {
   const usersFile = await fs.readFile(path.resolve(__dirname, 'public', 'users.html'))
