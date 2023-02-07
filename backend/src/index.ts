@@ -28,6 +28,15 @@ app.get("/users", (req, res) => {
 
 })
 
+app.put("/users", (req, res) => {
+  console.log("PUT a user");
+  res.send("PUT a user");
+});
+app.delete("/users", (req, res) => {
+  console.log("Deleted a user");
+  res.send("Deleted a user");
+})
+
 
 /*
 
@@ -72,7 +81,7 @@ app.get('/get', async (req, res) => {
 
 async function main() {
     const server = await app.listen(8080, () => {
-        console.log("Server is running");
+        console.log("Server is running on 8080...");
     });
 }
 

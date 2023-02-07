@@ -107,12 +107,23 @@ export function Nastify() {
         const { path, handler } = checkMiddlewareInputs(args);
         return router.post(path, handler);
     }
+    function put(...args) {
+        const { path, handler } = checkMiddlewareInputs(args);
+        return router.put(path, handler);
+    }
+    function _delete_internal(...args) {
+        const { path, handler } = checkMiddlewareInputs(args);
+        return router.delete(path, handler);
+    }
 
     return {
         listen,
         use,
         get,
-        post
+        post,
+        put,
+        // https://stackoverflow.com/questions/29172349/typescript-unable-to-create-a-delete-function-outside-of-a-class
+        delete: _delete_internal
     }
 }
 
