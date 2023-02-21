@@ -29,13 +29,3 @@ export class Profile extends BaseEntity {
 	@CreateDateColumn()
 	created_at: string;
 }
-
-/*
-TINDER: you are profile1
-when you swipe-right on another profile, say profile2
-> Create a new Match row in the Match table and set its matching_profile to our user
-
-if someone else swipes right on YOUR profile, again, profile1
-> Create a new match row in the match table and set its matched_Profile to our user
-
- */

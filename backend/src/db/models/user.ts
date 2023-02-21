@@ -1,19 +1,8 @@
 /** @module Models/User */
-import {
-	BaseEntity,
-	Column,
-	CreateDateColumn,
-	Entity, JoinTable,
-	ManyToMany,
-	OneToMany,
-	PrimaryGeneratedColumn,
-	Relation,
-	UpdateDateColumn
-} from "typeorm";
+import {BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Relation, UpdateDateColumn} from "typeorm";
 
 import {IPHistory} from "./ip_history";
 import {Profile} from "./profile";
-import {Match} from "./match";
 
 /**
  *  Class representing user table
