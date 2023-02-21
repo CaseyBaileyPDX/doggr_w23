@@ -1,5 +1,5 @@
 import './App.css';
-import {Button, Header} from "./Components";
+import {Button, Header, Users} from "./Components";
 
 
 function App() {
@@ -7,6 +7,7 @@ function App() {
 		<div className="App">
 			<Header />
 			<Button />
+			<Users />
 		</div>
 	);
 }
