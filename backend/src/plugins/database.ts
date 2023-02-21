@@ -7,9 +7,6 @@ import {IPHistory} from "../db/models/ip_history";
 import {FastifyInstance, FastifyPluginOptions} from "fastify";
 import {AppDataSource} from "../db/datasources/dev_datasource";
 import {Profile} from "../db/models/profile";
-import {Match} from "../db/models/match";
-
-
 
 /** This is AWESOME - we're telling typescript we're adding our own "thing" to base 'app', so we get FULL IDE/TS support */
 declare module 'fastify' {
@@ -52,8 +49,8 @@ const DbPlugin = fp(async (app: FastifyInstance, options: FastifyPluginOptions, 
 		connection: dataSourceConnection,
 		user: dataSourceConnection.getRepository(User),
 		ip: dataSourceConnection.getRepository(IPHistory),
-		profile: dataSourceConnection.getRepository(Profile),
-		match: dataSourceConnection.getRepository(Match),
+		profile: dataSourceConnection.getRepository(Profile)
+
 	});
 
 	done();

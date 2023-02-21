@@ -1,16 +1,6 @@
 /** @module Models/Profile */
-import {
-	BaseEntity,
-	Column,
-	CreateDateColumn,
-	Entity, JoinTable,
-	ManyToMany,
-	ManyToOne,
-	PrimaryGeneratedColumn,
-	Relation
-} from "typeorm";
+import {BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Relation} from "typeorm";
 import {User} from "./user";
-import {Match} from "./match";
 
 /**
  * Profile model - This is for interacting with the profile table
@@ -35,18 +25,6 @@ export class Profile extends BaseEntity {
 		onDelete: "CASCADE"
 	})
 	user: Relation<User>;
-
-	@ManyToMany(() => Match, (category) => category.matching_profile, {
-		cascade: true,
-	})
-	@JoinTable()
-	matches: Relation<Match[]>;
-
-	@ManyToMany(() => Match, (category) => category.matched_profile, {
-		cascade: true,
-	})
-	@JoinTable()
-	matched: Relation<Match[]>;
 
 	@CreateDateColumn()
 	created_at: string;
