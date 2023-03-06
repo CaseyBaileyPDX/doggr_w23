@@ -5,6 +5,7 @@ import Match from './components/Match';
 import {useEffect} from "react";
 import {Login} from "./components/Login";
 import {AuthProvider} from "./services/AuthService";
+import {ProtectedRoute} from "./components/utility/ProtectedRoute";
 
 function App() {
 
@@ -23,7 +24,7 @@ function App() {
 					</div>
 				</nav>
 				<Routes>
-					<Route path="/match" element={<Match/>}/>
+					<Route path="/match" element={<ProtectedRoute><Match/></ProtectedRoute>}/>
 					<Route path="/login" element={<Login/>}/>
 					<Route path="/" element={<Home/>}/>
 				</Routes>
