@@ -14,6 +14,7 @@ interface ImportMetaEnv {
 	readonly VITE_DB_PASS: string;
 	readonly VITE_DB_NAME: string;
 	readonly VITE_ADMINISTRATOR_PASSWORD: string;
+	readonly VITE_JWT_SECRET: string;
 }
 
 interface ImportMeta {

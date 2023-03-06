@@ -4,8 +4,6 @@ import SeedManager from "./lib/seed_manager";
 import SeederOptions from "./db/seeds/seeder_options";
 import {getModeFromArgs, RunMode} from "./lib/helpers";
 
-
-
 /**
  * Constructs Fastify instance
  * @param {boolean} useLogging whether to log the server or not
@@ -23,9 +21,9 @@ try {
 		case RunMode.SEED: {
 			// Run seed
 			try {
-				app.log.info("Starting seed");
+				app.log.info("Starting seed processing...");
 				await SeedManager.seedAll(app, SeederOptions);
-				app.log.info("Seeding done, cleaning up after ourselves...");
+				app.log.info("Seeding done, cleaning up after ourselves..");
 			} catch (err) {
 				app.log.error("Error seeding database" + err);
 			}

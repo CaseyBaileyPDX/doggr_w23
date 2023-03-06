@@ -66,6 +66,8 @@ export default defineConfig({
 
 			// Optional, default: 'esbuild', using swc for TypeORM support
 			tsCompiler: "swc",
+
+
 		}),
 	],
 	resolve: {

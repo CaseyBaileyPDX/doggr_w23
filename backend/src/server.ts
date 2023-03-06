@@ -9,6 +9,7 @@ import {getDirName} from "./lib/helpers";
 import logger from "./lib/logger";
 import {doggr_routes} from "./routes";
 import DbPlugin from "./plugins/database";
+import {AuthPlugin} from "./plugins/auth";
 
 
 
@@ -35,6 +36,9 @@ export async function buildApp(useLogging: boolean) {
 			root: path.join(getDirName(import.meta), "../public"),
 			prefix: "/public/",
 		});
+
+		// Adds our authentication plugin
+		await app.register(AuthPlugin);
 
 		// Adds all of our Router's routes to the app
 		app.log.info("Registering routes");

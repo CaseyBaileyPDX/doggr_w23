@@ -64,7 +64,7 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 
 		// Typescript solution to "This function might return null/undefined"
 		// We just label it here as possibly undefined in Typescript's typing
-		const result: ({ maxID: number  } | undefined) = await query.getRawOne();
+		const result: ({ maxID: number } | undefined) = await query.getRawOne();
 
 		// This '?' is the second half of Typescript's null/undef handling and will throw exception if null
 		reply.send(result?.maxID);
@@ -179,15 +179,34 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 		await reply.send(JSON.stringify(res));
 	});
 
-	// HW2 additions (1-6)
-	app.get("/matches", async (req, reply) => {
-		let matches = await app.db.match.find({
-			relations: ["matcher", "matchee"],
-		});
-
-		reply.send(matches);
-
+	// AUTH
+	// This is tip of the iceberg and still leaves some attack surface exposed
+	// https://github.com/fastify/fastify-jwt has excellent followup "next steps"
+	app.post('/signup', (req: any, reply) => {
+		const {userName, password} = req.body;
+		// Here we're making use of our new plugin's sign() function to create a JWT token based on username and password.
+		// Note that we expect password to ALREADY BE ENCRYPTED CLIENTSIDE.
+		const token = app.jwt.sign({ userName, password });
+		console.log("JWT TOKEN IS:");
+		console.log(token);
+		reply.send({ token });
 	});
+
+
+	// HW2 additions (1-6)
+	// Adds auth too
+	app.get(
+		"/matches",
+		{
+			onRequest: [app.auth]
+		},
+		async (req, reply) => {
+			let matches = await app.db.match.find({
+				relations: ["matcher", "matchee"],
+			});
+
+			reply.send(matches);
+		});
 
 	app.post("/match", async (req: any, reply) => {
 		const myMatch = new Match();
