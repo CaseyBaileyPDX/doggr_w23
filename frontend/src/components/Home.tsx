@@ -1,10 +1,12 @@
 import {Users} from "./User";
+import {ThreeCanvas} from "./Scene";
 
 export default function Home() {
   return (<div>
       <Title/>
       <Subtitle/>
-			<Users/>
+      <ThreeCanvas/>
+      <Users/>
     </div>
   );
 }

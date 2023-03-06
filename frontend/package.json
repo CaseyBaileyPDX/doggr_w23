@@ -14,10 +14,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@react-three/fiber": "^8.11.8",
     "axios": "^1.3.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.6.2"
+    "react-router-dom": "^6.6.2",
+    "three": "^0.150.1"
   },
   "devDependencies": {
     "@testing-library/dom": "^9.0.0",
@@ -28,6 +30,7 @@
     "@types/react-dom": "^18.0.9",
     "@types/react-router-dom": "^5.3.3",
     "@types/testing-library__jest-dom": "^5.14.5",
+    "@types/three": "^0.149.0",
     "@vitejs/plugin-react": "^3.0.0",
     "jsdom": "^21.0.0",
     "msw": "^1.1.0",
