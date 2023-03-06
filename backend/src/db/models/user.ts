@@ -31,6 +31,9 @@ export class User extends BaseEntity {
 	@Column('text')
 	email: string;
 
+	@Column()
+	password!: string;
+
 	// IPHistory
 	@OneToMany((type) => IPHistory, (ip: IPHistory) => ip.user)
 	ips: Relation<IPHistory[]>;

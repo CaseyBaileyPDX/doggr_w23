@@ -7,6 +7,7 @@ import {Profile} from "./db/models/profile";
 import {Match} from "./db/models/match";
 import {Message} from "./db/models/message";
 import {readFileSync} from "node:fs";
+import bcrypt from "bcrypt";
 
 /**
  * App plugin where we construct our routes
@@ -105,15 +106,22 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 	 * @returns {IPostUsersResponse} user and IP Address used to create account
 	 */
 	app.post<{
-		Body: IPostUsersBody,
+		//example of inline typescript interface/type
+		Body: {
+			name: string,
+			email: string,
+			password: string,
+		},
+		//example of standalone typescript interface/type
 		Reply: IPostUsersResponse
 	}>("/users", post_users_opts, async (req, reply: FastifyReply) => {
 
-		const {name, email} = req.body;
+		const {name, email, password} = req.body;
 
 		const user = new User();
 		user.name = name;
 		user.email = email;
+		user.password = password;
 
 		const ip = new IPHistory();
 		ip.ip = req.ip;
@@ -124,6 +132,36 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 		//manually JSON stringify due to fastify bug with validation
 		// https://github.com/fastify/fastify/issues/4017
 		await reply.send(JSON.stringify({user, ip_address: ip.ip}));
+	});
+
+	// Login route
+	app.post<{
+		Body: {
+			email: string,
+			password: string,
+		}
+	}>("/login", async (req, reply) => {
+		try {
+			const {email, password} = req.body;
+			let theUser = await app.db.user.findOneByOrFail({email});
+
+			const hashCompare = await bcrypt.compare(password, theUser.password);
+
+			if (hashCompare) {
+
+				const token = app.jwt.sign({email});
+
+				await reply.send({token});
+			} else {
+				app.log.info("Password validation failed");
+				await reply.status(401).send("Incorrect Password");
+			}
+
+
+		} catch (err) {
+			app.log.error(err);
+			await reply.status(500).send("User not found");
+		}
 	});
 
 
@@ -186,10 +224,10 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 		const {userName, password} = req.body;
 		// Here we're making use of our new plugin's sign() function to create a JWT token based on username and password.
 		// Note that we expect password to ALREADY BE ENCRYPTED CLIENTSIDE.
-		const token = app.jwt.sign({ userName, password });
-		console.log("JWT TOKEN IS:");
-		console.log(token);
-		reply.send({ token });
+		const token = app.jwt.sign({userName, password});
+		app.log.info("JWT TOKEN IS:");
+		app.log.info(token);
+		reply.send({token});
 	});
 
 
@@ -450,11 +488,6 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 
 }
 
-// Appease typescript request gods
-interface IPostUsersBody {
-	name: string,
-	email: string,
-}
 
 /**
  * Response type for post/users

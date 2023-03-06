@@ -5,6 +5,7 @@ import {Seeder} from "../../lib/seed_manager";
 import {ProfileSeed} from "./profile_seeder";
 import {MatchSeed} from "./match_seeder";
 import {MessageSeed} from "./message_seeder";
+import {ClearSeed} from "./clear_seeds";
 
 export type SeederOptionsType = {
 	seeds: Array<Seeder>;
@@ -15,6 +16,7 @@ export type SeederOptionsType = {
  */
 const SeederOptions: any = {
 	seeds: [
+		ClearSeed,
 		UserSeed,
 		IPHistorySeed,
 		ProfileSeed,

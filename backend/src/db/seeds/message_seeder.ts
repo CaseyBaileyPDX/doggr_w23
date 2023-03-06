@@ -17,8 +17,6 @@ export class MessageSeeder extends Seeder {
 
 	override async run(app: FastifyInstance) {
 		app.log.info("Seeding Messages...");
-		// Remove everything in there currently
-		await app.db.message.delete({});
 		// get our users
 		const users = await User.find();
 

@@ -2,7 +2,7 @@
 import {User} from "../models/user";
 import {Seeder} from "../../lib/seed_manager";
 import {FastifyInstance} from "fastify";
-
+import {hash} from "bcrypt";
 /**
  * UserSeeder class - Model class for interacting with "users" table
  */
@@ -15,15 +15,12 @@ export class UserSeeder extends Seeder {
 	 */
 	override async run(app: FastifyInstance) {
 		app.log.info("Seeding Users...");
-		// clear out whatever's already there
-		// note we cannot use .clear() because postgres cascade is bugged in Typeorm
-		// https://github.com/typeorm/typeorm/issues/1649
-		await app.db.user.delete({});
 
 		for (let i = 0; i < 10; i++) {
 			let user = new User();
 			user.name = "user" + i;
 			user.email = "user" + i + "@email.com";
+			user.password = await hash("password", 10);
 			await user.save();
 			app.log.info("Seeded user " + i);
 		}

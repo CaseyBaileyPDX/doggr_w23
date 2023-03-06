@@ -23,8 +23,6 @@ export class IPHistorySeeder extends Seeder {
    */
 	override async run(app: FastifyInstance) {
 		app.log.info("Seeding IP Histories...");
-		// Remove everything in there currently
-		await app.db.ip.delete({});
 		// get our users and make each a few IPs
 		const users = await User.find();
 

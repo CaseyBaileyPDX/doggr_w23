@@ -21,8 +21,6 @@ export class MatchSeeder extends Seeder {
 	 */
 	override async run(app: FastifyInstance) {
 		app.log.info("Seeding Matches...");
-		// Remove everything in there currently
-		await app.db.match.delete({});
 		// get our users
 		const profiles = await Profile.find();
 

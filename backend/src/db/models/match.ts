@@ -25,11 +25,14 @@ export class Match extends BaseEntity {
 
 	@ManyToOne((type) => Profile, (profile: Profile) => profile.matches, {
 		//No sense having a match without a matchee, right?
-		nullable: false
+		nullable: false,
+		onDelete: "CASCADE",
 	})
 	matcher: Relation<Profile>;
 
-	@ManyToOne((type) => Profile, (profile: Profile) => profile.matches)
+	@ManyToOne((type) => Profile, (profile: Profile) => profile.matches, {
+		onDelete: "CASCADE",
+	})
 	matchee!: Relation<Profile>; // The ! is Typescript's non-nullable operator and works like nullable: false above
 
 	@CreateDateColumn()
