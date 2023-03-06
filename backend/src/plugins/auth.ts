@@ -2,7 +2,6 @@ import {FastifyInstance, FastifyPluginOptions, FastifyReply, FastifyRequest} fro
 import Jwt, {VerifyPayloadType} from "@fastify/jwt";
 import fp from "fastify-plugin";
 
-
 declare module 'fastify' {
 	 interface FastifyRequest {
 		 // You can easily find the type of this return using intellisense inferral below
@@ -12,8 +11,6 @@ declare module 'fastify' {
 		auth(): void,
 	}
 }
-
-
 
 export const AuthPlugin = fp(async function(fastify: FastifyInstance, opts: FastifyPluginOptions) {
 	fastify.register(import("@fastify/jwt"), {

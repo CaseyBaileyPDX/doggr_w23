@@ -1,6 +1,7 @@
 /** @module Routes */
-import cors from "cors";
+
 import {FastifyInstance, FastifyReply, FastifyRequest, RouteShorthandOptions} from "fastify";
+
 import {User} from "./db/models/user";
 import {IPHistory} from "./db/models/ip_history";
 import {Profile} from "./db/models/profile";
@@ -14,10 +15,6 @@ import bcrypt from "bcrypt";
  * @param {FastifyInstance} app our main Fastify app instance
  */
 export async function doggr_routes(app: FastifyInstance): Promise<void> {
-
-	// Middleware
-	// TODO: Refactor this in favor of fastify-cors
-	app.use(cors());
 
 	/**
 	 * Route replying to /test path for test-testing

@@ -4,13 +4,13 @@
 import fastifyMiddie from "@fastify/middie";
 import staticFiles from "@fastify/static";
 import Fastify, {FastifyInstance} from "fastify";
+import cors from '@fastify/cors'
 import path from "path";
 import {getDirName} from "./lib/helpers";
 import logger from "./lib/logger";
 import {doggr_routes} from "./routes";
 import DbPlugin from "./plugins/database";
 import {AuthPlugin} from "./plugins/auth";
-
 
 
 /**
@@ -30,6 +30,19 @@ export async function buildApp(useLogging: boolean) {
 	try {
 		// add express-like 'app.use' middleware support
 		await app.register(fastifyMiddie);
+
+		await app.register(cors, {
+			origin: (origin, cb) => {
+				const hostname = new URL(origin).hostname;
+				if (hostname === "localhost" || hostname === '127.0.0.1' || hostname === import.meta.env.VITE_IP_ADDR) {
+					//  Request from localhost will pass
+					cb(null, true);
+					return;
+				}
+				// Generate an error on other origins, disabling access
+				cb(new Error("Not allowed"), false);
+			}
+		});
 
 		// add static file handling
 		await app.register(staticFiles, {
